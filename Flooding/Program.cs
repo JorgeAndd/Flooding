@@ -4,57 +4,71 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class Board
+
+namespace Flood
 {
-	private int height, length;
-	private Cell[,] board;
-
-	public Board(int height, int length)
+	public class Board
 	{
-		board = new Cell[height, length];
+		private int height, length;
+		private Cell[,] board;
 
-		for (int x = 0; x < length; x++)
+		public Board(int height, int length)
 		{
-			for (int y = 0; y < height; y++)
+			this.height = height;
+			this.length = length;
+
+			board = new Cell[height, length];
+
+			for (int x = 0; x < length; x++)
 			{
-				board[x, y] = new Cell();
+				for (int y = 0; y < height; y++)
+				{
+					board[x, y] = new Cell();
+				}
+			}
+		}
+
+		public void print()
+		{
+			for (int x = 0; x < this.length; x++)
+			{
+				for (int y = 0; y < this.height; y++)
+				{
+					System.Console.Write(board[x, y] + "\t");
+				}
+				System.Console.Write("\n");
+			}
+		}
+
+		public class Cell
+		{
+			private static readonly Random random = new Random();
+			int earth;
+			int water;
+
+			public Cell()
+			{
+				earth = random.Next(10);
+				water = random.Next(5);
+			}
+
+			public override string ToString()
+			{
+				return String.Format("{0}({1})", earth, water);
 			}
 		}
 	}
 
-	public void print()
+	public class Game
 	{
-		foreach (Cell cell in board)
+		public static void Main()
 		{
-			System.Console.WriteLine(cell);
-		}
-	}
+			Board board = new Board(5, 5);
 
-	public class Cell
-	{
-		int earth;
-		int water;
+			board.print();
 
-		public Cell()
-		{
-			Random rand = new Random();
-
-			earth = rand.Next(10);
-			water = rand.Next(5);
-		}
-
-		public override string ToString()
-		{
-			return String.Format("{0}({1})", earth, water);
-		}
-	}
-}
-
-namespace Flood
-{
-	public class Flood
-	{
-		Board board = new Board(5, 5);
-
+			System.Console.ReadLine();
+        }
+		
 	}
 }
