@@ -11,8 +11,6 @@ namespace Flood
 
 	public class Board
 	{
-		
-
 		private int height, length;
 		private Cell[,] board;
 
@@ -73,12 +71,96 @@ namespace Flood
 			}
 		}
 
-		public void floodNeighbours()
+		public void floodNeighbours(int x, int y)
 		{
 
 			// Find lower
-			// how?
+			PositionHolder lowerCell = getLowerNeighbour(x, y);
+			
+			//Loop while has lower
 
+			return;
+
+		}
+
+		private PositionHolder getLowerNeighbour(int x, int y)
+		{
+			PositionHolder lowerCell = new PositionHolder(-1, -1, int.MaxValue);
+			int new_x;
+			int new_y;
+
+			// Upper left
+			new_x = x - 1;
+			new_y = y - 1;
+
+			if (checkPosition(new_x, new_y))
+				if (board[new_x, new_y].currentLevel < lowerCell.value)
+					lowerCell.changeValue(new_x, new_y, board[new_x, new_y].currentLevel);
+
+			// Upper 
+			new_x = x;
+			new_y = y - 1;
+
+			if (checkPosition(new_x, new_y))
+				if (board[new_x, new_y].currentLevel < lowerCell.value)
+					lowerCell.changeValue(new_x, new_y, board[new_x, new_y].currentLevel);
+
+			// Upper right
+			new_x = x + 1;
+			new_y = y - 1;
+
+			if (checkPosition(new_x, new_y))
+				if (board[new_x, new_y].currentLevel < lowerCell.value)
+					lowerCell.changeValue(new_x, new_y, board[new_x, new_y].currentLevel);
+
+			// Left
+			new_x = x - 1;
+			new_y = y;
+
+			if (checkPosition(new_x, new_y))
+				if (board[new_x, new_y].currentLevel < lowerCell.value)
+					lowerCell.changeValue(new_x, new_y, board[new_x, new_y].currentLevel);
+
+			// Right
+			new_x = x + 1;
+			new_y = y;
+
+			if (checkPosition(new_x, new_y))
+				if (board[new_x, new_y].currentLevel < lowerCell.value)
+					lowerCell.changeValue(new_x, new_y, board[new_x, new_y].currentLevel);
+
+			// Bottom left
+			new_x = x - 1;
+			new_y = y + 1;
+
+			if (checkPosition(new_x, new_y))
+				if (board[new_x, new_y].currentLevel < lowerCell.value)
+					lowerCell.changeValue(new_x, new_y, board[new_x, new_y].currentLevel);
+
+			// Bottom 
+			new_x = x;
+			new_y = y + 1;
+
+			if (checkPosition(new_x, new_y))
+				if (board[new_x, new_y].currentLevel < lowerCell.value)
+					lowerCell.changeValue(new_x, new_y, board[new_x, new_y].currentLevel);
+
+			// Bottom right
+			new_x = x - 1;
+			new_y = y + 1;
+
+			if (checkPosition(new_x, new_y))
+				if (board[new_x, new_y].currentLevel < lowerCell.value)
+					lowerCell.changeValue(new_x, new_y, board[new_x, new_y].currentLevel);
+
+			return lowerCell;
+		}
+
+		// Checks if a given board position is valid 
+		// i.e. the cell(position) is inside the board
+		private bool checkPosition(int x, int y)
+		{
+			return ((x >= 0 && x < length) || (y >= 0 && y < height));
 		}
 
 		// PLACEHOLDE: for testing only
@@ -152,6 +234,7 @@ namespace Flood
 			private static readonly Random random = new Random();
 			private int earth;
 			private int water;
+			public int currentLevel { get { return earth + water; } }
 
 			public Cell()
 			{
@@ -173,7 +256,7 @@ namespace Flood
 
 			public bool canFlood(Cell other)
 			{
-				if ((this.currentLevel() > (other.currentLevel() + 1)) && this.water > 0)
+				if ((this.currentLevel > (other.currentLevel + 1)) && this.water > 0)
 					return true;
 				else
 					return false;
@@ -192,11 +275,6 @@ namespace Flood
 				{
 					return false;
 				}
-			}
-
-			public int currentLevel()
-			{
-				return earth + water;
 			}
 
 			public int CompareTo(object obj)
@@ -219,10 +297,25 @@ namespace Flood
 			}
 		}
 
-		public struct Point
+		private struct PositionHolder
 		{
-			public int X { get; set; }
-			public int Y { get; set; }
+			public int x;
+			public int y;
+			public int value;
+
+			public PositionHolder(int x, int y, int value)
+			{
+				this.x = x;
+				this.y = y;
+				this.value = value;
+			}
+
+			public void changeValue(int x, int y, int value)
+			{
+				this.x = x;
+				this.y = y;
+				this.value = value;
+			}
 		}
 	}
 
@@ -238,7 +331,7 @@ namespace Flood
 			board.test();
 
 			board.print();
-
+			board.floodNeighbours(1, 1);
 
 			System.Console.ReadLine();
         }
