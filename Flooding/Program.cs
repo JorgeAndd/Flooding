@@ -27,7 +27,7 @@ namespace Flood
 			board[2, 0] = new Cell(2,0);
 			board[3, 0] = new Cell(4,2);
 
-			board[0, 1] = new Cell(3,4);
+			board[0, 1] = new Cell(0,0);
 			board[1, 1] = new Cell(10,0);
 			board[2, 1] = new Cell(5,2);
 			board[3, 1] = new Cell(1,3);
@@ -67,91 +67,140 @@ namespace Flood
 				{
 					System.Console.Write(board[x, y] + "\t");
 				}
-				System.Console.Write("\n");
+				System.Console.Write("{0}\n", y);
 			}
+			System.Console.Write("0\t1\t2\t3\n");
 		}
 
 		public void floodNeighbours(int x, int y)
 		{
 
 			// Find lower
-			PositionHolder lowerCell = getLowerNeighbour(x, y);
+			int nx, ny; // Neighbour x and neigbour y
+			Cell lowerCell;
 			
 			//Loop while has lower
+
+			lowerCell = getLowerNeighbour(x, y, out nx, out ny);
+			while (board[x,y].flood(lowerCell))
+			{
+				// PLACEHOLDER for testing purpouses
+				print();
+				System.Console.WriteLine("\nMoved water from ({0},{1}) to ({2},{3})", x, y, nx, ny);
+				System.Console.ReadLine();
+
+				floodNeighbours(nx, ny);
+				lowerCell = getLowerNeighbour(x, y, out nx, out ny);
+			}
 
 			return;
 
 		}
 
-		private PositionHolder getLowerNeighbour(int x, int y)
+		private Cell getLowerNeighbour(int x, int y, out int nx, out int ny)
 		{
-			PositionHolder lowerCell = new PositionHolder(-1, -1, int.MaxValue);
+			Cell lowerCell = null;
 			int new_x;
 			int new_y;
+
+			nx = -1;
+			ny = -1;
 
 			// Upper left
 			new_x = x - 1;
 			new_y = y - 1;
 
 			if (checkPosition(new_x, new_y))
-				if (board[new_x, new_y].currentLevel < lowerCell.value)
-					lowerCell.changeValue(new_x, new_y, board[new_x, new_y].currentLevel);
+				if (lowerCell == null || board[new_x, new_y].currentLevel < lowerCell.currentLevel)
+				{
+					lowerCell = board[new_x, new_y];
+					nx = new_x;
+					ny = new_y;
+				}
 
 			// Upper 
 			new_x = x;
 			new_y = y - 1;
 
 			if (checkPosition(new_x, new_y))
-				if (board[new_x, new_y].currentLevel < lowerCell.value)
-					lowerCell.changeValue(new_x, new_y, board[new_x, new_y].currentLevel);
+				if (lowerCell == null || board[new_x, new_y].currentLevel < lowerCell.currentLevel)
+				{
+					lowerCell = board[new_x, new_y];
+					nx = new_x;
+					ny = new_y;
+				}
 
 			// Upper right
 			new_x = x + 1;
 			new_y = y - 1;
 
 			if (checkPosition(new_x, new_y))
-				if (board[new_x, new_y].currentLevel < lowerCell.value)
-					lowerCell.changeValue(new_x, new_y, board[new_x, new_y].currentLevel);
+				if (lowerCell == null || board[new_x, new_y].currentLevel < lowerCell.currentLevel)
+				{
+					lowerCell = board[new_x, new_y];
+					nx = new_x;
+					ny = new_y;
+				}
 
 			// Left
 			new_x = x - 1;
 			new_y = y;
 
 			if (checkPosition(new_x, new_y))
-				if (board[new_x, new_y].currentLevel < lowerCell.value)
-					lowerCell.changeValue(new_x, new_y, board[new_x, new_y].currentLevel);
+				if (lowerCell == null || board[new_x, new_y].currentLevel < lowerCell.currentLevel)
+				{
+					lowerCell = board[new_x, new_y];
+					nx = new_x;
+					ny = new_y;
+				}
 
 			// Right
 			new_x = x + 1;
 			new_y = y;
 
 			if (checkPosition(new_x, new_y))
-				if (board[new_x, new_y].currentLevel < lowerCell.value)
-					lowerCell.changeValue(new_x, new_y, board[new_x, new_y].currentLevel);
+				if (lowerCell == null || board[new_x, new_y].currentLevel < lowerCell.currentLevel)
+				{
+					lowerCell = board[new_x, new_y];
+					nx = new_x;
+					ny = new_y;
+				}
 
 			// Bottom left
 			new_x = x - 1;
 			new_y = y + 1;
 
 			if (checkPosition(new_x, new_y))
-				if (board[new_x, new_y].currentLevel < lowerCell.value)
-					lowerCell.changeValue(new_x, new_y, board[new_x, new_y].currentLevel);
+				if (lowerCell == null || board[new_x, new_y].currentLevel < lowerCell.currentLevel)
+				{
+					lowerCell = board[new_x, new_y];
+					nx = new_x;
+					ny = new_y;
+				}
 
 			// Bottom 
 			new_x = x;
 			new_y = y + 1;
 
 			if (checkPosition(new_x, new_y))
-				if (board[new_x, new_y].currentLevel < lowerCell.value)
-					lowerCell.changeValue(new_x, new_y, board[new_x, new_y].currentLevel);
+				if (lowerCell == null || board[new_x, new_y].currentLevel < lowerCell.currentLevel)
+				{
+					lowerCell = board[new_x, new_y];
+					nx = new_x;
+					ny = new_y;
+				}
 
 			// Bottom right
 			new_x = x - 1;
 			new_y = y + 1;
 
 			if (checkPosition(new_x, new_y))
-				if (board[new_x, new_y].currentLevel < lowerCell.value)
-					lowerCell.changeValue(new_x, new_y, board[new_x, new_y].currentLevel);
+				if (lowerCell == null || board[new_x, new_y].currentLevel < lowerCell.currentLevel)
+				{
+					lowerCell = board[new_x, new_y];
+					nx = new_x;
+					ny = new_y;
+				}
 
 			return lowerCell;
 		}
@@ -160,7 +209,7 @@ namespace Flood
 		// i.e. the cell(position) is inside the board
 		private bool checkPosition(int x, int y)
 		{
-			return ((x >= 0 && x < length) || (y >= 0 && y < height));
+			return ((x >= 0 && x < length) && (y >= 0 && y < height));
 		}
 
 		// PLACEHOLDE: for testing only
@@ -262,8 +311,14 @@ namespace Flood
 					return false;
 			}
 
+			// Reduces the water level of the cell and increases the water level 
+			// of another cell.
+			// Returns true if successful, false otherwise
 			public bool flood(Cell other)
 			{
+				if (other == null)
+					return false;
+
 				if(this.canFlood(other))
 				{
 					this.water--;
@@ -283,7 +338,7 @@ namespace Flood
 
 				Cell other = obj as Cell;
 
-				return this.currentLevel() - other.currentLevel();
+				return this.currentLevel - other.currentLevel;
 			}
 
 			public static bool operator <(Cell c1, Cell c2)
@@ -328,10 +383,10 @@ namespace Flood
 			board.print();
 
 			System.Console.WriteLine();
-			board.test();
+			//board.test();
 
-			board.print();
-			board.floodNeighbours(1, 1);
+			//board.print();
+			board.floodNeighbours(1, 3);
 
 			System.Console.ReadLine();
         }
