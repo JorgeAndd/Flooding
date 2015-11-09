@@ -12,7 +12,7 @@ namespace Flood
 	public class Board
 	{
 		private int height, length;
-		private Cell[,] board;
+		public Cell[,] board;
 
 		// PLACEHOLDER: Constructor with hard coded board values for test purposes
 		public Board()
@@ -22,6 +22,7 @@ namespace Flood
 
 			board = new Cell[height, length];
 
+			/*
 			board[0, 0] = new Cell(2,0);
 			board[1, 0] = new Cell(7,0);
 			board[2, 0] = new Cell(2,0);
@@ -41,6 +42,27 @@ namespace Flood
 			board[1, 3] = new Cell(7,8);
 			board[2, 3] = new Cell(6,2);
 			board[3, 3] = new Cell(4,3);
+			*/
+
+			board[0, 0] = new Cell(1, 0);
+			board[1, 0] = new Cell(3, 0);
+			board[2, 0] = new Cell(1, 0);
+			board[3, 0] = new Cell(2, 0);
+
+			board[0, 1] = new Cell(2, 0);
+			board[1, 1] = new Cell(1, 0);
+			board[2, 1] = new Cell(3, 0);
+			board[3, 1] = new Cell(1, 0);
+
+			board[0, 2] = new Cell(0, 0);
+			board[1, 2] = new Cell(3, 0);
+			board[2, 2] = new Cell(2, 0);
+			board[3, 2] = new Cell(0, 0);
+
+			board[0, 3] = new Cell(2, 0);
+			board[1, 3] = new Cell(1, 0);
+			board[2, 3] = new Cell(3, 0);
+			board[3, 3] = new Cell(1, 0);
 		}
 
 		public Board(int height, int length)
@@ -87,7 +109,7 @@ namespace Flood
 				// PLACEHOLDER for testing purpouses
 				print();
 				System.Console.WriteLine("\nMoved water from ({0},{1}) to ({2},{3})", x, y, nx, ny);
-				System.Console.ReadLine();
+				//System.Console.ReadLine();
 
 				floodNeighbours(nx, ny);
 				lowerCell = getLowerNeighbour(x, y, out nx, out ny);
@@ -282,8 +304,8 @@ namespace Flood
 		{
 			private static readonly Random random = new Random();
 			private int earth;
-			private int water;
-			public int currentLevel { get { return earth + water; } }
+			private float water;
+			public float currentLevel { get { return earth + water; } }
 
 			public Cell()
 			{
@@ -319,7 +341,7 @@ namespace Flood
 				if (other == null)
 					return false;
 
-				if(this.canFlood(other))
+				if (this.canFlood(other))
 				{
 					this.water--;
 					other.water++;
@@ -332,13 +354,18 @@ namespace Flood
 				}
 			}
 
+			public void riseLevel(int amount)
+			{
+				water += amount;
+			}
+
 			public int CompareTo(object obj)
 			{
 				if (obj == null) return 1;
 
 				Cell other = obj as Cell;
 
-				return this.currentLevel - other.currentLevel;
+				return this.currentLevel > other.currentLevel ? 1 : -1;
 			}
 
 			public static bool operator <(Cell c1, Cell c2)
@@ -386,9 +413,17 @@ namespace Flood
 			//board.test();
 
 			//board.print();
+			while(true)
+			{
+				board.board[2, 2].riseLevel(1);
+				board.print();
+				System.Console.WriteLine();
+				board.floodNeighbours(2, 2);
+				System.Console.ReadLine();
+			}
 			board.floodNeighbours(1, 3);
 
-			System.Console.ReadLine();
+			
         }
 		
 	}
