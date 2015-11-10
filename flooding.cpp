@@ -189,13 +189,13 @@ void floodNeighbours(int x, int y, Cell board[TAM][TAM], int mShow[TAM][TAM]){
         // PLACEHOLDER for testing purpouses
         //printf("\nMoved water from ({%d},{%d}) to ({%d},{%d})\n", x, y, nx, ny);
         board[nx][ny] = lowerCell;
-        Pintar(0, 0, board[nx][ny].water, QUADRADO, mShow[nx][ny]);
+        Pintar(0, 0, board[nx][ny].water + board[nx][ny].earth, QUADRADO, mShow[nx][ny]);
         Desenha1Frame();
 
         floodNeighbours(nx, ny, board, mShow);
         lowerCell = getLowerNeighbour(x, y, &nx, &ny, board);
 
-        Pintar(0, 0, board[x][y].water, QUADRADO, mShow[x][y]);
+        Pintar(0, 0, board[x][y].water + board[nx][ny].earth, QUADRADO, mShow[x][y]);
     }
 }
 
@@ -208,7 +208,7 @@ int main(){
     Ponto p;
 
     AbreJanela(600, 600, "Int Geiser");
-    srand(time(NULL));
+    //srand(time(NULL));
 
     p.y = 90;
     for(int i = 0; i < TAM; i++){
@@ -237,9 +237,9 @@ int main(){
     while(!ApertouTecla(GLFW_KEY_ENTER))
         Desenha1Frame();
 
-    Pintar(0, 0, board[starti][startj].water, QUADRADO, mShow[starti][startj]);
-    amount = 100;
-    while(board[starti][startj].water != 255){
+    Pintar(0, 0, board[starti][startj].water + board[starti][startj].earth, QUADRADO, mShow[starti][startj]);
+    amount = 1;
+    while(board[starti][startj].water + board[starti][startj].earth != 257){
         printf("\n\n****%dth generation\n", ++gen);
         //riseLevel
         board[starti][startj].water += amount;
